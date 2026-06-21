@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sida 100</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="tv-frame">
+
+    <!-- Header bar -->
+    <div class="tv-hdr">
+      <span class="tv-hdr-num">100</span>
+      <span class="tv-hdr-brand">Sida 100</span>
+      <span class="tv-hdr-time" id="popupClock">00:00:00</span>
+    </div>
+
+    <!-- Body -->
+    <div class="tv-body">
+
+      <!-- Status row -->
+      <div class="status-row">
+        <span class="status-label">STATUS</span>
+        <span class="status-value" id="statusEl">○ LADDAR…</span>
+      </div>
+
+      <!-- Toggle button -->
+      <button class="toggle-btn" id="toggleBtn" disabled>
+        ► AKTIVERA SIDA 100
+      </button>
+
+      <!-- Divider -->
+      <div class="tv-sep"></div>
+
+      <!-- Info -->
+      <div class="info-block">
+        <div class="info-line">■ Alt+T &nbsp; Toggle Sida 100 av/på</div>
+        <div class="info-line">■ Klicka länk för att navigera</div>
+        <div class="info-line">■ ✕ STÄNG-knapp nere till höger</div>
+        <div class="info-line info-dim">Interna sidor laddas via AJAX</div>
+        <div class="info-line info-dim">Externa hopp återaktiveras automatiskt</div>
+      </div>
+
+    </div>
+
+    <!-- Footer bar -->
+    <div class="tv-ftr">Sida 100 Extension &nbsp; v1.0</div>
+
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

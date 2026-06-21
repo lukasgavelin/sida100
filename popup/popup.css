@@ -1,0 +1,149 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TextTV Extension – Popup Styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'VT323', 'Courier New', 'Lucida Console', monospace;
+}
+
+html, body {
+  background: #000;
+  width: 310px;
+  min-height: 260px;
+  color: #fff;
+}
+
+/* ── TV frame ─────────────────────────────────────────────────────────────── */
+.tv-frame {
+  background: #000;
+  border: 3px solid #0000CC;
+  box-shadow:
+    0 0 0 1px #000,
+    0 0 24px rgba(0, 0, 200, 0.45),
+    inset 0 0 40px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.tv-hdr {
+  background: #0000CC;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 12px;
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+
+.tv-hdr-num   { color: #fff; font-size: 22px; }
+.tv-hdr-brand { color: #FFFF00; font-size: 28px; letter-spacing: 3px; }
+.tv-hdr-time  { color: #fff; font-size: 18px; }
+
+/* ── Body ────────────────────────────────────────────────────────────────── */
+.tv-body {
+  padding: 14px;
+  flex: 1;
+}
+
+/* ── Status ──────────────────────────────────────────────────────────────── */
+.status-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.status-label {
+  color: #555;
+  font-size: 19px;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+.status-value {
+  font-size: 22px;
+  color: #888;
+}
+.status-value.is-active {
+  color: #00FF00;
+  text-shadow: 0 0 8px rgba(0,255,0,0.5);
+}
+.status-value.is-error {
+  color: #FF4444;
+}
+
+/* ── Toggle button ───────────────────────────────────────────────────────── */
+.toggle-btn {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 2px solid #00FF00;
+  color: #00FF00;
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: 22px;
+  padding: 9px 0;
+  cursor: pointer;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: background 0.06s, color 0.06s, box-shadow 0.06s;
+  text-shadow: 0 0 6px rgba(0,255,0,0.3);
+}
+
+.toggle-btn:not(:disabled):hover {
+  background: #00FF00;
+  color: #000;
+  box-shadow: 0 0 14px rgba(0, 255, 0, 0.55);
+  text-shadow: none;
+}
+
+.toggle-btn.is-on {
+  border-color: #FF4444;
+  color: #FF4444;
+  text-shadow: 0 0 6px rgba(255, 68, 68, 0.4);
+}
+
+.toggle-btn.is-on:not(:disabled):hover {
+  background: #FF4444;
+  color: #000;
+  box-shadow: 0 0 14px rgba(255, 68, 68, 0.55);
+  text-shadow: none;
+}
+
+.toggle-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Separator ───────────────────────────────────────────────────────────── */
+.tv-sep {
+  border-top: 1px solid #0000CC;
+  margin: 14px 0;
+}
+
+/* ── Info block ──────────────────────────────────────────────────────────── */
+.info-block { margin-top: 2px; }
+
+.info-line {
+  color: #777;
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.info-dim {
+  color: #444;
+  font-size: 17px;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.tv-ftr {
+  background: #0000CC;
+  color: #fff;
+  font-size: 17px;
+  padding: 5px 12px;
+  text-align: center;
+  letter-spacing: 1px;
+}

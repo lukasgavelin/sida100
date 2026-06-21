@@ -1,0 +1,376 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TextTV Extension – Content Styles
+   All selectors scoped under #__texttvOv to avoid conflicts with host page.
+   Font (VT323) is injected dynamically via JS to sidestep CSP @import issues.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Overlay shell ──────────────────────────────────────────────────────── */
+#__texttvOv {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: #000 !important;
+  z-index: 2147483647 !important;
+  overflow-y: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  padding: 0 0 60px !important;
+  margin: 0 !important;
+  scrollbar-color: #0000CC #000 !important;
+  scrollbar-width: thin !important;
+}
+
+#__texttvOv * {
+  font-family: 'VT323', 'Courier New', 'Lucida Console', monospace !important;
+  box-sizing: border-box !important;
+  text-decoration: none !important;
+  list-style: none !important;
+}
+
+/* ── CRT scanline overlay ────────────────────────────────────────────────── */
+#__texttvOv .__ttv-crt {
+  position: fixed !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.13) 3px,
+    rgba(0, 0, 0, 0.13) 4px
+  ) !important;
+}
+
+/* ── Screen wrapper ──────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-screen {
+  width: 100% !important;
+  max-width: 860px !important;
+  background: #000 !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  position: relative !important;
+}
+
+/* ── Header bar ──────────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-hdr {
+  background: #0000CC !important;
+  color: #fff !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 4px 14px !important;
+  font-size: 22px !important;
+  letter-spacing: 1px !important;
+  flex-shrink: 0 !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 3 !important;
+}
+
+#__texttvOv .__ttv-hdr-num {
+  color: #fff !important;
+  font-size: 22px !important;
+}
+
+#__texttvOv .__ttv-hdr-site {
+  color: #FFFF00 !important;
+  font-size: 26px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 3px !important;
+}
+
+#__texttvOv .__ttv-hdr-time {
+  color: #fff !important;
+  font-size: 18px !important;
+}
+
+/* ── Title bar ───────────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-titlebar {
+  background: #0000CC !important;
+  color: #fff !important;
+  text-align: center !important;
+  font-size: 40px !important;
+  line-height: 1.15 !important;
+  padding: 8px 16px !important;
+  word-break: break-word !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+}
+
+/* ── URL breadcrumb ──────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-urlbar {
+  background: #000 !important;
+  color: #444 !important;
+  font-size: 17px !important;
+  padding: 3px 14px !important;
+  border-bottom: 1px solid #0000AA !important;
+}
+
+/* ── Content area ────────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-content {
+  flex: 1 !important;
+  padding: 14px 16px 90px !important;
+  color: #fff !important;
+}
+
+/* ── Headings ────────────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-h1 {
+  color: #FFFF00 !important;
+  font-size: 38px !important;
+  margin: 18px 0 8px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  word-break: break-word !important;
+  text-shadow: 0 0 10px rgba(255,255,0,0.35) !important;
+  line-height: 1.15 !important;
+}
+
+#__texttvOv .__ttv-h2 {
+  color: #00FFFF !important;
+  font-size: 30px !important;
+  margin: 18px 0 6px !important;
+  letter-spacing: 1px !important;
+  text-shadow: 0 0 8px rgba(0,255,255,0.25) !important;
+  word-break: break-word !important;
+  line-height: 1.2 !important;
+}
+
+#__texttvOv .__ttv-h3 {
+  color: #00FF00 !important;
+  font-size: 26px !important;
+  margin: 14px 0 4px !important;
+  text-shadow: 0 0 6px rgba(0,255,0,0.25) !important;
+  word-break: break-word !important;
+}
+
+#__texttvOv .__ttv-h4,
+#__texttvOv .__ttv-h5,
+#__texttvOv .__ttv-h6 {
+  color: #FF8800 !important;
+  font-size: 23px !important;
+  margin: 10px 0 4px !important;
+  word-break: break-word !important;
+}
+
+/* ── Paragraph ───────────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-p {
+  color: #fff !important;
+  font-size: 23px !important;
+  line-height: 1.55 !important;
+  margin: 8px 0 !important;
+  word-break: break-word !important;
+}
+
+/* ── Inline: links ───────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-link {
+  color: #00FF00 !important;
+  cursor: pointer !important;
+}
+#__texttvOv .__ttv-link:hover {
+  background: #00FF00 !important;
+  color: #000 !important;
+}
+
+#__texttvOv .__ttv-badge {
+  color: #FFFF00 !important;
+  font-size: 0.72em !important;
+  vertical-align: super !important;
+  margin-left: 4px !important;
+}
+
+/* ── Inline: emphasis ────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-bold { color: #FFFF00 !important; }
+#__texttvOv .__ttv-em   { color: #00FFFF !important; }
+#__texttvOv .__ttv-code {
+  color: #FF8800 !important;
+  background: rgba(255,136,0,0.08) !important;
+  padding: 0 3px !important;
+}
+
+/* ── Lists ───────────────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-list { margin: 8px 0 !important; }
+
+#__texttvOv .__ttv-li {
+  display: flex !important;
+  gap: 8px !important;
+  font-size: 23px !important;
+  color: #fff !important;
+  line-height: 1.45 !important;
+  margin: 4px 0 !important;
+  word-break: break-word !important;
+}
+
+#__texttvOv .__ttv-li-pfx {
+  color: #FFFF00 !important;
+  flex-shrink: 0 !important;
+  min-width: 1.6em !important;
+}
+
+#__texttvOv .__ttv-li-text { flex: 1 !important; }
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-table {
+  margin: 14px 0 !important;
+  width: 100% !important;
+}
+
+#__texttvOv .__ttv-tr {
+  display: flex !important;
+  gap: 16px !important;
+  padding: 3px 0 !important;
+  border-bottom: 1px solid #0a0a2a !important;
+}
+
+#__texttvOv .__ttv-th {
+  color: #FFFF00 !important;
+  font-size: 21px !important;
+  flex: 1 !important;
+  word-break: break-word !important;
+}
+
+#__texttvOv .__ttv-td {
+  color: #fff !important;
+  font-size: 21px !important;
+  flex: 1 !important;
+  word-break: break-word !important;
+}
+
+/* ── Blockquotes ─────────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-quote {
+  color: #FF8800 !important;
+  font-size: 23px !important;
+  padding: 6px 12px !important;
+  border-left: 4px solid #FF8800 !important;
+  margin: 12px 0 !important;
+  word-break: break-word !important;
+  background: rgba(255,136,0,0.05) !important;
+}
+
+/* ── Pre / code blocks ───────────────────────────────────────────────────── */
+#__texttvOv .__ttv-pre {
+  color: #00FF00 !important;
+  font-size: 19px !important;
+  background: rgba(0,255,0,0.04) !important;
+  padding: 10px 12px !important;
+  margin: 10px 0 !important;
+  overflow-x: auto !important;
+  white-space: pre-wrap !important;
+  border-left: 3px solid #00FF00 !important;
+}
+
+/* ── Separator ───────────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-hr {
+  border: none !important;
+  border-top: 2px solid #0000CC !important;
+  margin: 18px 0 !important;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-empty {
+  color: #FFFF00 !important;
+  font-size: 28px !important;
+  text-align: center !important;
+  padding: 60px 20px !important;
+  animation: __ttv_blink 1.4s step-end infinite !important;
+}
+
+/* ── Footer bar ──────────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-ftr {
+  background: #0000CC !important;
+  color: #fff !important;
+  font-size: 21px !important;
+  padding: 7px 14px !important;
+  display: flex !important;
+  justify-content: space-around !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 3 !important;
+}
+
+#__texttvOv .__ttv-ftr-link {
+  color: #fff !important;
+  cursor: pointer !important;
+  padding: 2px 8px !important;
+  transition: background 0.05s !important;
+}
+#__texttvOv .__ttv-ftr-link:hover {
+  background: #fff !important;
+  color: #0000CC !important;
+}
+
+/* ── Loading indicator ───────────────────────────────────────────────────── */
+#__texttvOv .__ttv-loader {
+  display: none; /* No !important — JS overrides this via el.style.display */
+  color: #FFFF00 !important;
+  font-size: 30px !important;
+  text-align: center !important;
+  padding: 28px !important;
+  animation: __ttv_blink 0.75s step-end infinite !important;
+  position: relative !important;
+  z-index: 4 !important;
+}
+
+/* ── Site navigation bar ─────────────────────────────────────────────────── */
+#__texttvOv .__ttv-navbar {
+  width: 100% !important;
+  background: #000044 !important;
+  padding: 7px 14px !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 5px !important;
+  border-bottom: 2px solid #0000AA !important;
+  border-top: 1px solid #0000AA !important;
+  flex-shrink: 0 !important;
+}
+
+#__texttvOv .__ttv-nav-item {
+  color: #00FFFF !important;
+  font-size: 20px !important;
+  cursor: pointer !important;
+  padding: 2px 10px !important;
+  border: 1px solid #0000CC !important;
+  white-space: nowrap !important;
+  transition: background 0.06s, color 0.06s !important;
+  letter-spacing: 1px !important;
+}
+
+#__texttvOv .__ttv-nav-item:hover {
+  background: #0000CC !important;
+  color: #FFFF00 !important;
+}
+
+/* ── Close button ────────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-close,
+html > .__ttv-close {
+  position: fixed !important;
+  bottom: 18px !important;
+  right: 18px !important;
+  background: #AA0000 !important;
+  color: #fff !important;
+  border: 2px solid #FF4444 !important;
+  padding: 7px 18px !important;
+  font-size: 21px !important;
+  font-family: 'VT323', 'Courier New', monospace !important;
+  cursor: pointer !important;
+  z-index: 2147483648 !important;
+  letter-spacing: 2px !important;
+  box-shadow: 0 0 12px rgba(200, 0, 0, 0.5) !important;
+  transition: background 0.1s !important;
+}
+#__texttvOv .__ttv-close:hover {
+  background: #FF0000 !important;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.7) !important;
+}
+/* ── Animations ──────────────────────────────────────────────────────────── */
+@keyframes __ttv_blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
