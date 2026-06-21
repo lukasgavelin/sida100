@@ -5,26 +5,26 @@
   "version": "1.0.0",
   "description": "Omvandlar vilken webbsida som helst till klassisk TextTV/Teletext-estetik",
   "icons": {
-    "16":  "icons/icon16.png",
-    "48":  "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16":  "sida100_icons/sida100_icon16.png",
+    "48":  "sida100_icons/sida100_icon48.png",
+    "128": "sida100_icons/sida100_icon128.png"
   },
   "action": {
-    "default_popup": "popup/popup.html",
+    "default_popup": "sida100_popup/sida100_popup.html",
     "default_title": "Sida 100",
     "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png"
+      "16": "sida100_icons/sida100_icon16.png",
+      "48": "sida100_icons/sida100_icon48.png"
     }
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "sida100_background.js"
   },
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["content.js"],
-      "css": ["content.css"],
+      "js": ["sida100_content.js"],
+      "css": ["sida100_content.css"],
       "run_at": "document_idle",
       "all_frames": false
     }

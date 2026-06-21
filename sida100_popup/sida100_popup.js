@@ -78,11 +78,11 @@
       try {
         await chrome.scripting.executeScript({
           target: { tabId: tab.id },
-          files: ['content.js'],
+          files: ['sida100_content.js'],
         });
         await chrome.scripting.insertCSS({
           target: { tabId: tab.id },
-          files: ['content.css'],
+          files: ['sida100_content.css'],
         });
         // Give it a moment to register its message listener
         await new Promise(r => setTimeout(r, 80));
