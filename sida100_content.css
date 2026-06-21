@@ -369,6 +369,17 @@ html > .__ttv-close {
   background: #FF0000 !important;
   box-shadow: 0 0 20px rgba(255, 0, 0, 0.7) !important;
 }
+/* ── Warning banner ──────────────────────────────────────────────────────── */
+#__texttvOv .__ttv-warning {
+  background: #AA0000 !important;
+  color: #fff !important;
+  font-size: 23px !important;
+  padding: 8px 12px !important;
+  margin: 15px 0 !important;
+  border: 1px solid #FF0000 !important;
+  text-align: center !important;
+  letter-spacing: 1px !important;
+}
 /* ── Animations ──────────────────────────────────────────────────────────── */
 @keyframes __ttv_blink {
   0%, 100% { opacity: 1; }

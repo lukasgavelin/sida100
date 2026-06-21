@@ -465,6 +465,47 @@
     walkEl(main, items, baseUrl);
     const navLinks = extractNavLinks(doc, baseUrl);
 
+    // Detect if a paywall existed in the original document
+    let hasPaywall = false;
+    const cfg = getActiveConfig();
+    if (cfg && cfg.badSelectors && cfg.badSelectors.length) {
+      hasPaywall = cfg.badSelectors.some(sel => {
+        try {
+          return doc.querySelector(sel) !== null;
+        } catch {
+          return false;
+        }
+      });
+    }
+    if (!hasPaywall) {
+      try {
+        hasPaywall = doc.querySelector('.paywall, .premium-lock, .premium-paywall, [class*="paywall"], [class*="premium-lock"]') !== null;
+      } catch {}
+    }
+
+    // Measure total text length of content items
+    let totalLength = 0;
+    items.forEach(it => {
+      if (it.t === 'p' || it.t === 'quote') {
+        if (it.parts) {
+          it.parts.forEach(p => { if (p.text) totalLength += p.text.length; });
+        }
+      } else if (it.t === 'list') {
+        it.items.forEach(li => {
+          if (li.parts) {
+            li.parts.forEach(p => { if (p.text) totalLength += p.text.length; });
+          }
+        });
+      }
+    });
+
+    if (items.length > 0 && totalLength > 0 && totalLength < 500 && hasPaywall) {
+      items.push({
+        t: 'warning',
+        text: '■ OBS: PREMIUMINNEHÅLL (SERVERN SKICKADE BARA UTDRAG)'
+      });
+    }
+
     return { title, items, navLinks };
   }
 
@@ -566,6 +607,11 @@
 
     for (const item of content.items) {
       switch (item.t) {
+
+        case 'warning': {
+          wrap.appendChild(make('div', '__ttv-warning', item.text));
+          break;
+        }
 
         case 'h': {
           const el = make('div', `__ttv-h __ttv-h${item.level}`);
@@ -888,18 +934,58 @@
    */
   function scheduleSPARetry() {
     let done = false;
+
+    // 1. Fixed interval checks as a fallback
     [600, 1800, 4500].forEach(delay => {
       setTimeout(() => {
-        if (done || !S.active || !S.overlay) return;
-        // Short-circuit if content already appeared (retry or link click filled it)
-        if (!S.overlay.querySelector('.__ttv-empty')) { done = true; return; }
-        const content = extractContent(document, location.href);
-        if (content.items.length > 0) {
-          done = true;
-          redrawContent(content); // no second extractContent pass
-        }
+        triggerCheck();
       }, delay);
     });
+
+    // 2. MutationObserver for instant redraws as elements mount
+    let observer = null;
+    try {
+      observer = new MutationObserver(() => {
+        triggerCheck();
+      });
+      observer.observe(document.body || document.documentElement, {
+        childList: true,
+        subtree: true
+      });
+    } catch (err) {
+      console.warn('[TextTV] Failed to start MutationObserver for SPA:', err);
+    }
+
+    // Auto-disconnect observer after 10 seconds to save memory
+    setTimeout(() => {
+      cleanup();
+    }, 10000);
+
+    function triggerCheck() {
+      if (done || !S.active || !S.overlay) {
+        cleanup();
+        return;
+      }
+      // If content is already rendered on screen, short-circuit
+      if (!S.overlay.querySelector('.__ttv-empty')) {
+        done = true;
+        cleanup();
+        return;
+      }
+      const content = extractContent(document, location.href);
+      if (content.items.length > 0) {
+        done = true;
+        redrawContent(content);
+        cleanup();
+      }
+    }
+
+    function cleanup() {
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+      }
+    }
   }
 
   function deactivate() {
