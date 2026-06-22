@@ -66,11 +66,11 @@
   // ─────────────────────────────────────────────────────────────────────────
   function injectFont() {
     if (document.getElementById('__ttv_gfont')) return;
-    const link = document.createElement('link');
-    link.id   = '__ttv_gfont';
-    link.rel  = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css2?family=VT323&display=swap';
-    (document.head || document.documentElement).appendChild(link);
+    const style = document.createElement('style');
+    style.id = '__ttv_gfont';
+    const fontUrl = chrome.runtime.getURL('fonts/VT323-Regular.ttf');
+    style.textContent = `@font-face{font-family:'VT323';font-style:normal;font-weight:400;font-display:block;src:url('${fontUrl}') format('truetype');}`;
+    (document.head || document.documentElement).appendChild(style);
   }
 
   // ─────────────────────────────────────────────────────────────────────────

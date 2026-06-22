@@ -4,6 +4,9 @@
   "short_name": "Sida 100",
   "version": "1.0.0",
   "description": "Omvandlar vilken webbsida som helst till klassisk TextTV/Teletext-estetik",
+  "author": "Lukas Gavelin",
+  "homepage_url": "https://github.com/lukasgavelin/sida100",
+  "default_locale": "sv",
   "icons": {
     "16":  "sida100_icons/sida100_icon16.png",
     "48":  "sida100_icons/sida100_icon48.png",
@@ -37,5 +40,14 @@
   ],
   "host_permissions": [
     "<all_urls>"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["fonts/VT323-Regular.ttf"],
+      "matches": ["http://*/*", "https://*/*"]
+    }
   ]
 }

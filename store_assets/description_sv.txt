@@ -1,0 +1,36 @@
+Sida 100 – TextTV-läge för hela webben
+
+Förvandla vilken webbsida som helst till klassisk TextTV/Teletext-estetik med ett knapptryck.
+
+─────────────────────────────
+HUR DET FUNGERAR
+─────────────────────────────
+Klicka på Sida 100-ikonen i verktygsfältet (eller tryck Alt+T) så transformeras den aktiva fliken till ett retro-TextTV-gränssnitt med VT323-typografi, blå header och gul text – precis som SVT Text TV.
+
+• Aktivera/avaktivera med ett klick eller Alt+T
+• Klicka på länknummer för att navigera (samma domän = AJAX, inga sidomladdningar)
+• Lämnar du sidan och återvänder aktiveras TextTV-läget automatiskt
+• ✕-knapp stänger läget direkt på sidan
+
+─────────────────────────────
+FUNKTIONER
+─────────────────────────────
+■ Fungerar på alla HTTP/HTTPS-sidor
+■ Hämtar och visar text, rubriker, listor och tabeller
+■ Navigeringsbar med sidans interna länkar
+■ AJAX-navigering på samma domän (snabb, utan sidomladdning)
+■ Automatisk återaktivering efter externa länkhopp
+■ Stöd för SPA-sidor (React, Vue, Next.js m.fl.) via MutationObserver
+■ Retro CRT-scanlines-effekt
+■ Realtidsklocka i TextTV-stil
+■ Tangentbordsgenväg: Alt+T
+
+─────────────────────────────
+WEBBPLATSSPECIFIKA OPTIMERINGAR
+─────────────────────────────
+Aftonbladet, Expressen, SVT, DN, SvD, GP, Omni, TV4, DI, Sydsvenskan
+
+─────────────────────────────
+INTEGRITET
+─────────────────────────────
+Sida 100 samlar inte in, skickar inte eller säljer någon data. Allt körs lokalt i webbläsaren. Tilläggspaketet innehåller inga tredjepartsspårare.

@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Sida 100",
+    "description": "Tilläggets namn"
+  },
+  "extShortName": {
+    "message": "Sida 100",
+    "description": "Tilläggets kortnamn"
+  },
+  "extDescription": {
+    "message": "Omvandlar vilken webbsida som helst till klassisk TextTV/Teletext-estetik",
+    "description": "Tilläggets beskrivning"
+  }
+}

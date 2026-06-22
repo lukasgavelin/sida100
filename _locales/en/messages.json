@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Sida 100",
+    "description": "Extension name"
+  },
+  "extShortName": {
+    "message": "Sida 100",
+    "description": "Extension short name"
+  },
+  "extDescription": {
+    "message": "Transforms any web page into classic TextTV / Teletext aesthetic",
+    "description": "Extension description"
+  }
+}
