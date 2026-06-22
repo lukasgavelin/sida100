@@ -40,4 +40,4 @@ The extension bundles the **VT323** font locally. No requests are made to Google
 ## Contact
 
 If you have any questions about this privacy policy, please open an issue at:  
-https://github.com/lukasgavelin/sida100
+https://github.com/lukasgavelin/sida100/issues
