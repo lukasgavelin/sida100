@@ -61,19 +61,19 @@ Sida 100 samlar inte in, skickar inte eller säljer någon data. All bearbetning
 
 ```
 sida100/
-├── manifest.json            # Tilläggskonfiguration (Manifest V3)
-├── sida100_content.js       # Content script – extraherar och renderar TextTV-overlay
-├── sida100_content.css      # Stilar för overlay:n
-├── sida100_background.js    # Service worker – hanterar CORS-fetch och tab-state
+├── manifest.json # Tilläggskonfiguration (Manifest V3)
+├── sida100_content.js # Content script – extraherar och renderar TextTV-overlay
+├── sida100_content.css # Stilar för overlay:n
+├── sida100_background.js # Service worker – hanterar CORS-fetch och tab-state
 ├── fonts/
-│   └── VT323-Regular.ttf    # Lokal kopia av VT323-fonten
-├── sida100_icons/           # Ikoner i 16, 48 och 128 px
-├── sida100_popup/           # Popup-UI (HTML, CSS, JS)
-├── _locales/                # Lokalisering (sv, en)
-└── store_assets/            # Chrome Web Store-material
-    ├── description_sv.txt
-    ├── privacy_policy.md
-    └── sida100_chrome_extension.zip
+│ └── VT323-Regular.ttf # Lokal kopia av VT323-fonten
+├── sida100_icons/ # Ikoner i 16, 48 och 128 px
+├── sida100_popup/ # Popup-UI (HTML, CSS, JS)
+├── _locales/ # Lokalisering (sv, en)
+└── store_assets/ # Chrome Web Store-material
+ ├── description_sv.txt
+ ├── privacy_policy.md
+ └── sida100_chrome_extension.zip
 ```
 
 ---
