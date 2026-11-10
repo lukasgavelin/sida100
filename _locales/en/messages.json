@@ -10,5 +10,9 @@
   "extDescription": {
     "message": "Transforms any web page into classic TextTV / Teletext aesthetic",
     "description": "Extension description"
+  },
+  "commandToggleDesc": {
+    "message": "Toggle Sida 100 on or off",
+    "description": "Keyboard shortcut description"
   }
 }

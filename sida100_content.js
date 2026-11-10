@@ -25,6 +25,10 @@
     nextNum: 101,
     clockTimer: null,
     navAbort: null,      // AbortController for in-flight AJAX navigation
+    currentPageNum: 100, // Current active Teletext page number
+    inputBuffer: '',     // 3-digit number navigation buffer
+    inputTimer: null,    // Timer to reset number buffer
+    initialUrl: null,    // Original page URL when activated
   };
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -555,6 +559,9 @@
     navLinks.forEach(({ text, href, num }) => {
       const item = make('span', '__ttv-nav-item', `${text} ►${num}`);
       item.dataset.href = href;
+      item.dataset.num = num;
+      item.setAttribute('role', 'link');
+      item.setAttribute('tabindex', '0');
       bar.appendChild(item);
     });
     return bar;
@@ -577,6 +584,9 @@
           const badge = make('sup', '__ttv-badge', '►' + p.num);
           wrap.appendChild(badge);
           wrap.dataset.href = p.href;
+          wrap.dataset.num = p.num;
+          wrap.setAttribute('role', 'link');
+          wrap.setAttribute('tabindex', '0');
           frag.appendChild(wrap);
           break;
         }
@@ -703,6 +713,9 @@
             .slice(0, 9);
           const span = make('span', '__ttv-ftr-link', `${name} ${num}`);
           span.dataset.href = url;
+          span.dataset.num = num;
+          span.setAttribute('role', 'link');
+          span.setAttribute('tabindex', '0');
           ftr.appendChild(span);
         } catch {}
       });
@@ -715,6 +728,8 @@
   function buildOverlay(content) {
     const ov = document.createElement('div');
     ov.id = '__texttvOv';
+    ov.setAttribute('role', 'dialog');
+    ov.setAttribute('aria-label', 'Sida 100 TextTV');
 
     // CRT scanlines
     ov.appendChild(make('div', '__ttv-crt'));
@@ -724,7 +739,8 @@
 
     // Header
     const hdr = make('div', '__ttv-hdr');
-    const numEl  = make('span', '__ttv-hdr-num',  '100');
+    const numEl  = make('span', '__ttv-hdr-num', String(S.currentPageNum));
+    numEl.id = '__ttv_hdr_num';
     const siteEl = make('span', '__ttv-hdr-site', location.hostname.replace('www.', ''));
     const timeEl = make('span', '__ttv-hdr-time', '');
     timeEl.id = '__ttv_clock';
@@ -757,20 +773,37 @@
 
     ov.appendChild(screen);
 
-    // Delegated click handler for all [data-href] links
+    function triggerLink(target) {
+      if (!target || !target.dataset.href) return;
+      const targetNum = target.dataset.num ? parseInt(target.dataset.num, 10) : null;
+      navigate(target.dataset.href, targetNum);
+    }
+
+    // Delegated click and keyboard handlers for all [data-href] links
     ov.addEventListener('click', e => {
       const target = e.target.closest('[data-href]');
       if (!target) return;
       e.preventDefault();
       e.stopPropagation();
-      navigate(target.dataset.href);
+      triggerLink(target);
+    });
+
+    ov.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        const target = e.target.closest('[data-href]');
+        if (target) {
+          e.preventDefault();
+          e.stopPropagation();
+          triggerLink(target);
+        }
+      }
     });
 
     return ov;
   }
 
   // ─────────────────────────────────────────────────────────────────────────
-  // CLOCK
+  // CLOCK & NUMBER INPUT
   // ─────────────────────────────────────────────────────────────────────────
   const DAYS   = ['sön','mån','tis','ons','tor','fre','lör'];
   const MONTHS = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
@@ -785,6 +818,53 @@
       `  ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
   }
 
+  function updateHeaderNum() {
+    const numEl = document.getElementById('__ttv_hdr_num');
+    if (!numEl) return;
+    if (S.inputBuffer) {
+      numEl.textContent = S.inputBuffer.padEnd(3, '-');
+      numEl.classList.add('__ttv-hdr-inputting');
+    } else {
+      numEl.textContent = String(S.currentPageNum);
+      numEl.classList.remove('__ttv-hdr-inputting');
+    }
+  }
+
+  function handleDigitInput(digit) {
+    if (!S.active) return;
+    if (S.inputTimer) clearTimeout(S.inputTimer);
+
+    S.inputBuffer += digit;
+    updateHeaderNum();
+
+    if (S.inputBuffer.length === 3) {
+      const targetNum = parseInt(S.inputBuffer, 10);
+      S.inputBuffer = '';
+
+      if (targetNum === 100 && S.initialUrl) {
+        navigate(S.initialUrl, 100);
+      } else if (S.links.has(targetNum)) {
+        navigate(S.links.get(targetNum), targetNum);
+      } else {
+        // Flash header number to indicate page not found
+        const numEl = document.getElementById('__ttv_hdr_num');
+        if (numEl) {
+          numEl.textContent = '???';
+          numEl.classList.add('__ttv-hdr-inputting');
+          setTimeout(() => {
+            updateHeaderNum();
+          }, 800);
+        }
+      }
+    } else {
+      // Clear incomplete input after 2.5 seconds
+      S.inputTimer = setTimeout(() => {
+        S.inputBuffer = '';
+        updateHeaderNum();
+      }, 2500);
+    }
+  }
+
   // ─────────────────────────────────────────────────────────────────────────
   // NAVIGATION – Alt. D (Hybrid)
   // ─────────────────────────────────────────────────────────────────────────
@@ -794,15 +874,24 @@
     if (el) el.style.display = show ? 'block' : 'none';
   }
 
-  async function navigate(url) {
+  async function navigate(url, pageNum = null) {
+    if (pageNum != null) {
+      S.currentPageNum = pageNum;
+    } else if (S.revLinks.has(url)) {
+      S.currentPageNum = S.revLinks.get(url);
+    } else {
+      S.currentPageNum = 100;
+    }
+    updateHeaderNum();
+
     if (sameDomain(url)) {
-      await navigateAjax(url);
+      await navigateAjax(url, S.currentPageNum);
     } else {
       navigateExternal(url);
     }
   }
 
-  async function navigateAjax(url) {
+  async function navigateAjax(url, pageNum = null) {
     // Cancel any previous in-flight navigation so stale responses are never rendered
     if (S.navAbort) S.navAbort.abort();
     const abort = new AbortController();
@@ -815,19 +904,26 @@
 
       if (!resp || !resp.success) throw new Error(resp?.error || 'fetch failed');
 
+      // If non-HTML resource (PDF, image, download) -> normal navigation
+      if (resp.contentType && !resp.contentType.includes('text/html') && !resp.contentType.includes('application/xhtml')) {
+        navigateExternal(url);
+        return;
+      }
+
+      const finalUrl = resp.finalUrl || url;
       const parser = new DOMParser();
       const doc    = parser.parseFromString(resp.html, 'text/html');
-      if (abort.signal.aborted) return; // check again after (potentially slow) parsing
+      if (abort.signal.aborted) return; // check again after parsing
 
       // Ensure relative URLs resolve against the fetched page's URL
       const base  = doc.createElement('base');
-      base.href   = url;
+      base.href   = finalUrl;
       doc.head.insertBefore(base, doc.head.firstChild);
 
       // Update browser history so Back/Forward work
-      history.pushState({ __ttv: url }, doc.title || '', url);
+      history.pushState({ __ttv: finalUrl, pageNum: S.currentPageNum }, doc.title || '', finalUrl);
 
-      redraw(doc, url);
+      redraw(doc, finalUrl);
     } catch (err) {
       if (abort.signal.aborted) return;
       console.warn('[TextTV] AJAX nav failed, falling back to normal navigation:', err.message);
@@ -873,6 +969,8 @@
     const oldFtr = ov.querySelector('.__ttv-ftr');
     if (oldFtr) oldFtr.replaceWith(buildFooter());
 
+    updateHeaderNum();
+
     ov.scrollTop = 0;
   }
 
@@ -884,7 +982,11 @@
   // Handle browser Back/Forward after AJAX navigation
   window.addEventListener('popstate', e => {
     if (S.active && e.state?.__ttv) {
-      navigateAjax(e.state.__ttv).catch(() => {});
+      if (e.state.pageNum) {
+        S.currentPageNum = e.state.pageNum;
+        updateHeaderNum();
+      }
+      navigateAjax(e.state.__ttv, e.state.pageNum).catch(() => {});
     }
   });
 
@@ -895,12 +997,15 @@
   function activate() {
     if (S.active) return;
     S.active = true;
+    if (!S.initialUrl) {
+      S.initialUrl = location.href;
+    }
     injectFont();
 
     // Tag the current history entry with __ttv state so Back navigation always
     // has a state object to trigger the popstate handler (including the first page).
     try {
-      history.replaceState({ __ttv: location.href }, document.title, location.href);
+      history.replaceState({ __ttv: location.href, pageNum: S.currentPageNum }, document.title, location.href);
     } catch {
       // SecurityError on file://, blob:, data: URLs — safe to ignore
     }
@@ -992,6 +1097,12 @@
     if (!S.active) return;
     S.active = false;
 
+    if (S.inputTimer) {
+      clearTimeout(S.inputTimer);
+      S.inputTimer = null;
+    }
+    S.inputBuffer = '';
+
     S.overlay?.remove();
     S.overlay = null;
     S.closeBtn?.remove();
@@ -1000,6 +1111,11 @@
     clearInterval(S.clockTimer);
 
     chrome.runtime.sendMessage({ action: 'setState', active: false }).catch(() => {});
+
+    // Alt A: If user navigated to a different page inside TextTV, sync host page by reloading
+    if (S.initialUrl && location.href !== S.initialUrl) {
+      location.href = location.href;
+    }
   }
 
   function toggle() {
@@ -1023,13 +1139,26 @@
   });
 
   // ─────────────────────────────────────────────────────────────────────────
-  // KEYBOARD SHORTCUT  Alt+T
+  // KEYBOARD SHORTCUT & DIGIT NAVIGATION
   // ─────────────────────────────────────────────────────────────────────────
 
   document.addEventListener('keydown', e => {
+    // Alt+T shortcut fallback
     if (e.altKey && (e.key === 't' || e.key === 'T')) {
       e.preventDefault();
       toggle();
+      return;
+    }
+
+    // Remote-control 3-digit navigation when Sida 100 is active
+    if (S.active && !e.altKey && !e.ctrlKey && !e.metaKey) {
+      const activeTag = document.activeElement ? document.activeElement.tagName : '';
+      if (activeTag === 'INPUT' || activeTag === 'TEXTAREA') return;
+
+      if (e.key >= '0' && e.key <= '9') {
+        e.preventDefault();
+        handleDigitInput(e.key);
+      }
     }
   }, true);
 

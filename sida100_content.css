@@ -74,6 +74,15 @@
 #__texttvOv .__ttv-hdr-num {
   color: #fff !important;
   font-size: 22px !important;
+  min-width: 45px !important;
+  display: inline-block !important;
+}
+
+#__texttvOv .__ttv-hdr-num.__ttv-hdr-inputting {
+  background: #FFFF00 !important;
+  color: #000 !important;
+  padding: 0 4px !important;
+  animation: __ttv_blink 0.5s step-end infinite !important;
 }
 
 #__texttvOv .__ttv-hdr-site {
@@ -170,9 +179,11 @@
   color: #00FF00 !important;
   cursor: pointer !important;
 }
-#__texttvOv .__ttv-link:hover {
+#__texttvOv .__ttv-link:hover,
+#__texttvOv .__ttv-link:focus {
   background: #00FF00 !important;
   color: #000 !important;
+  outline: none !important;
 }
 
 #__texttvOv .__ttv-badge {
@@ -301,9 +312,11 @@
   padding: 2px 8px !important;
   transition: background 0.05s !important;
 }
-#__texttvOv .__ttv-ftr-link:hover {
+#__texttvOv .__ttv-ftr-link:hover,
+#__texttvOv .__ttv-ftr-link:focus {
   background: #fff !important;
   color: #0000CC !important;
+  outline: none !important;
 }
 
 /* ── Loading indicator ───────────────────────────────────────────────────── */
@@ -342,9 +355,11 @@
   letter-spacing: 1px !important;
 }
 
-#__texttvOv .__ttv-nav-item:hover {
+#__texttvOv .__ttv-nav-item:hover,
+#__texttvOv .__ttv-nav-item:focus {
   background: #0000CC !important;
   color: #FFFF00 !important;
+  outline: none !important;
 }
 
 /* ── Close button ────────────────────────────────────────────────────────── */

@@ -27,11 +27,18 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       credentials: 'include',
       headers: { 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' }
     })
-      .then(r => {
+      .then(async r => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.text();
+        const contentType = r.headers.get('content-type') || '';
+        const html = await r.text();
+        return { html, finalUrl: r.url, contentType };
       })
-      .then(html => sendResponse({ success: true, html }))
+      .then(res => sendResponse({
+        success: true,
+        html: res.html,
+        finalUrl: res.finalUrl,
+        contentType: res.contentType
+      }))
       .catch(err => sendResponse({ success: false, error: err.message }));
     return true; // Keep message channel open for async response
   }
@@ -88,6 +95,40 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
       chrome.tabs.sendMessage(tabId, { action: 'reactivate' }).catch(() => {});
     }, 500);
   });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Keyboard command listener (Alt+T / command defined in manifest)
+// ─────────────────────────────────────────────────────────────────────────────
+
+chrome.commands.onCommand.addListener(async command => {
+  if (command === 'toggle-sida100') {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab?.id) return;
+
+    const blocked = /^(chrome|chrome-extension|about|edge|data):/i;
+    if (blocked.test(tab.url || '')) return;
+
+    try {
+      await chrome.tabs.sendMessage(tab.id, { action: 'toggle' });
+    } catch {
+      // Content script not yet injected – inject and activate
+      try {
+        await chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          files: ['sida100_content.js'],
+        });
+        await chrome.scripting.insertCSS({
+          target: { tabId: tab.id },
+          files: ['sida100_content.css'],
+        });
+        await new Promise(r => setTimeout(r, 80));
+        await chrome.tabs.sendMessage(tab.id, { action: 'activate' });
+      } catch (err) {
+        console.warn('[TextTV SW] Failed to inject on command:', err);
+      }
+    }
+  }
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

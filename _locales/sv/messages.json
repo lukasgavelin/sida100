@@ -10,5 +10,9 @@
   "extDescription": {
     "message": "Omvandlar vilken webbsida som helst till klassisk TextTV/Teletext-estetik",
     "description": "Tilläggets beskrivning"
+  },
+  "commandToggleDesc": {
+    "message": "Aktivera eller stäng Sida 100",
+    "description": "Kortkommandots beskrivning"
   }
 }
